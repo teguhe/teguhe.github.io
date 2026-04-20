@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MONITORING KENDARAAN PEMKOT SALATIGA</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f1923;
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    .slide-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1200px;
+      padding: 60px 80px;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .slide.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Title Slide */
+    .slide-title {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    }
+
+    .slide-title h1 {
+      font-size: 3.2em;
+      color: #00d4ff;
+      text-shadow: 0 0 30px rgba(0,212,255,0.3);
+      margin-bottom: 20px;
+    }
+
+    .slide-title .tech {
+      font-size: 1.4em;
+      color: #ff6b35;
+      margin: 30px 0;
+      font-weight: bold;
+    }
+
+    .slide-title .author {
+      font-size: 1.3em;
+      color: #aaa;
+      margin-top: 40px;
+    }
+
+    /* Section Slide */
+    .slide-section {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    .slide-section h2 {
+      font-size: 3em;
+      color: #00d4ff;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+    }
+
+    /* Content Slide */
+    .slide-content {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+    }
+
+    .slide-content h2 {
+      font-size: 2.2em;
+      color: #00d4ff;
+      margin-bottom: 40px;
+      text-align: left;
+      border-bottom: 3px solid #ff6b35;
+      padding-bottom: 15px;
+    }
+
+    .slide-content ul {
+      list-style: none;
+      text-align: left;
+      font-size: 1.4em;
+      line-height: 2.2;
+    }
+
+    .slide-content ul li {
+      padding-left: 35px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .slide-content ul li::before {
+      content: "▸";
+      color: #ff6b35;
+      position: absolute;
+      left: 0;
+      font-size: 1.2em;
+    }
+
+    /* Team Slide */
+    .team-box {
+      background: rgba(0,212,255,0.08);
+      border: 2px solid #00d4ff;
+      border-radius: 15px;
+      padding: 30px 40px;
+      text-align: left;
+      margin-bottom: 25px;
+    }
+
+    .team-box h3 {
+      color: #ff6b35;
+      font-size: 1.5em;
+      margin-bottom: 15px;
+    }
+
+    .team-box p {
+      font-size: 1.1em;
+      line-height: 1.8;
+      color: #ddd;
+    }
+
+    .team-box .highlight {
+      color: #00d4ff;
+      font-weight: bold;
+    }
+
+    /* JSON Slide */
+    .json-box {
+      background: #0d1117;
+      border: 2px solid #00d4ff;
+      border-radius: 10px;
+      padding: 30px 40px;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1em;
+      color: #7ee787;
+      line-height: 1.8;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    /* Hardware Grid */
+    .hw-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      text-align: left;
+      font-size: 1.15em;
+    }
+
+    .hw-item {
+      background: rgba(255,107,53,0.1);
+      border-left: 4px solid #ff6b35;
+      padding: 15px 20px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .hw-item strong { color: #00d4ff; }
+    .hw-item span { color: #ddd; display: block; margin-top: 5px; }
+
+    /* Task Slide */
+    .task-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      text-align: left;
+      font-size: 1.15em;
+    }
+
+    .task-item {
+      background: rgba(0,212,255,0.1);
+      border: 1px solid #00d4ff;
+      padding: 20px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .task-num {
+      background: #ff6b35;
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 100;
+    }
+
+    .nav button {
+      background: rgba(0,212,255,0.15);
+      border: 2px solid #00d4ff;
+      color: #00d4ff;
+      padding: 12px 30px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s;
+    }
+
+    .nav button:hover {
+      background: #00d4ff;
+      color: #0f1923;
+    }
+
+    .nav button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Progress */
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: #ff6b35;
+      transition: width 0.3s;
+    }
+
+    /* Slide Counter */
+    .counter {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 1.1em;
+      color: #666;
+    }
+
+    /* Watermark */
+    .watermark {
+      position: fixed;
+      bottom: 15px;
+      right: 30px;
+      font-size: 0.85em;
+      color: #333;
+    }
+
+    /* Protection overlay - makes copy difficult */
+    .protect-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    /* Right click block indicator */
+    .slide-content::after {
+      content: "";
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="protect-overlay"></div>
+  <div class="progress" id="progress"></div>
+  <div class="counter" id="counter">1 / 14</div>
+
+  <div class="slide-container">
+    <!-- Slide 1: Title -->
+    <div class="slide slide-title active" data-slide="1">
+      <h1>MONITORING KENDARAAN</h1>
+      <h1 style="color:#fff; font-size:2.5em;">PEMKOT SALATIGA</h1>
+      <div class="tech">ESP32 + NEO-6M + SIM800L</div>
+      <div class="author">Teguh Prasetyo, S.Kom., M.Si.</div>
+    </div>
+
+    <!-- Slide 2: Tujuan Monitoring -->
+    <div class="slide slide-content" data-slide="2">
+      <h2>Tujuan Monitoring</h2>
+      <ul>
+        <li>Kendaraan pengangkut sampah</li>
+        <li>Ambulan</li>
+        <li>Mobil dinas</li>
+        <li>Dan kendaraan lainnya</li>
+      </ul>
+    </div>
+
+    <!-- Slide 3: Jenis Kendaraan -->
+    <div class="slide slide-content" data-slide="3">
+      <h2>Jenis Kendaraan</h2>
+      <ul>
+        <li>Motor</li>
+        <li>Roda 3</li>
+        <li>Mobil</li>
+        <li>Truk</li>
+        <li>Lainnya</li>
+      </ul>
+    </div>
+
+    <!-- Slide 4: Pembagian Team -->
+    <div class="slide slide-content" data-slide="4">
+      <h2>Pembagian Team</h2>
+      <ul>
+        <li>1 team terdiri dari 2-4 orang</li>
+        <li>Team bisa fleksibel, boleh pindah team</li>
+        <li>Tentukan team sebelum mulai mengerjakan</li>
+      </ul>
+    </div>
+
+    <!-- Slide 5: Team 1 -->
+    <div class="slide slide-content" data-slide="5">
+      <h2>Team 1: Hardware Engineer</h2>
+      <div class="team-box">
+        <h3>Firmware & Payload Standardization</h3>
+        <p>
+          Membuat firmware yang menyertakan <span class="highlight">Vehicle_ID</span> dan 
+          <span class="highlight">Vehicle_Type</span> (1=Motor, 2=Mobil, 3=Truk) dalam setiap paket data.
+        </p>
+        <p style="margin-top:15px;">
+          Mengatur interval pengiriman data<br>
+          Implementasi protokol <span class="highlight">JSON via MQTT</span>
+        </p>
+      </div>
+      <div class="team-box" style="border-color: #ff6b35;">
+        <p><strong style="color:#ff6b35;">⚠ Ketergantungan:</strong> Team 2 tidak bisa memproses data jika struktur JSON dari Team 1 belum didefinisikan.</p>
+      </div>
+    </div>
+
+    <!-- Slide 6: Sample JSON -->
+    <div class="slide slide-content" data-slide="6">
+      <h2>Sample JSON</h2>
+      <div class="json-box">{
+  "v_id": "TRUCK-01",
+  "v_type": "heavy_truck",
+  "lat": -7.3305,
+  "lng": 110.5084,
+  "speed": 60,
+  "timestamp": "2026-04-20T10:00:00Z"
+}</div>
+    </div>
+
+    <!-- Slide 7: Team 2 -->
+    <div class="slide slide-content" data-slide="7">
+      <h2>Team 2: Backend & Database Architect</h2>
+      <div class="team-box">
+        <h3>Multi-Vehicle Handling</h3>
+        <p>
+          Merancang database (<span class="highlight">PostgreSQL + PostGIS</span> atau MySQL Spatial) 
+          untuk menyimpan koordinat geografis.
+        </p>
+        <p style="margin-top:15px;">
+          Membuat tabel Vehicles<br>
+          Membangun API yang memisahkan data berdasarkan ID kendaraan
+        </p>
+      </div>
+      <div class="team-box" style="border-color: #ff6b35;">
+        <p><strong style="color:#ff6b35;">⚠ Ketergantungan:</strong> Team 3 tidak bisa menghitung statistik jika data tidak tersimpan dalam struktur multi-vehicle.</p>
+      </div>
+    </div>
+
+    <!-- Slide 8: Team 3 -->
+    <div class="slide slide-content" data-slide="8">
+      <h2>Team 3: Logic & Analytics Developer</h2>
+      <div class="team-box">
+        <h3>Engine Rules & Alerts</h3>
+        <p>
+          <span class="highlight">Geofencing</span> — Mendeteksi jika kendaraan keluar dari area yang ditentukan
+        </p>
+        <p style="margin-top:15px;">
+          <span class="highlight">Behavior Analytics</span> — Menghitung kecepatan rata-rata untuk deteksi overspeeding<br>
+          <span class="highlight">Maintenance Reminder</span> — Peringatan servis berdasarkan total jarak tempuh
+        </p>
+      </div>
+      <div class="team-box" style="border-color: #ff6b35;">
+        <p><strong style="color:#ff6b35;">⚠ Ketergantungan:</strong> Team 4 tidak bisa menampilkan peringatan jika logikanya belum matang.</p>
+      </div>
+    </div>
+
+    <!-- Slide 9: Team 4 -->
+    <div class="slide slide-content" data-slide="9">
+      <h2>Team 4: Frontend Developer</h2>
+      <div class="team-box">
+        <h3>Management Dashboard</h3>
+        <p>
+          <span class="highlight">Live Map View</span> — Menampilkan banyak marker kendaraan di peta dengan ikon berbeda (motor, mobil, truk)
+        </p>
+        <p style="margin-top:15px;">
+          <span class="highlight">Vehicle Switching</span> — Pilih kendaraan dan lihat riwayat perjalanan (history playback)<br>
+          <span class="highlight">Filtering</span> — Filter "hanya truk yang sedang aktif" atau "motor yang sedang berhenti"
+        </p>
+      </div>
+    </div>
+
+    <!-- Slide 10: Perangkat Keras -->
+    <div class="slide slide-content" data-slide="10">
+      <h2>Perangkat Keras (Sisi Kendaraan/Node)</h2>
+      <div class="hw-grid">
+        <div class="hw-item">
+          <strong>Mikrokontroler</strong>
+          <span>ESP32 (Dual-Core, stabil untuk GPS + Wi-Fi/GPRS)</span>
+        </div>
+        <div class="hw-item">
+          <strong>Modul GPS</strong>
+          <span>NEO-6M atau NEO-7M (murah & akurat)</span>
+        </div>
+        <div class="hw-item">
+          <strong>Konektivitas</strong>
+          <span>SIM800L/SIM900A (GPRS/2G) atau ESP32 Wi-Fi</span>
+        </div>
+        <div class="hw-item">
+          <strong>Antena Eksternal</strong>
+          <span>Sangat disarankan untuk locking satelit lebih cepat</span>
+        </div>
+        <div class="hw-item">
+          <strong>Power Supply</strong>
+          <span>Buck Converter LM2596 (12V → 5V)</span>
+        </div>
+        <div class="hw-item">
+          <strong>Penyimpanan Cadangan</strong>
+          <span>Micro SD Card Module (offline logging)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Infrastruktur -->
+    <div class="slide slide-content" data-slide="11">
+      <h2>Infrastruktur Server & Database</h2>
+      <div class="hw-grid">
+        <div class="hw-item">
+          <strong>Database</strong>
+          <span>MySQL 8.0+ (ST_Distance_Sphere & indeks spasial)</span>
+        </div>
+        <div class="hw-item">
+          <strong>MQTT Broker</strong>
+          <span>Mosquitto (standar protokol IoT)</span>
+        </div>
+        <div class="hw-item">
+          <strong>Application Server</strong>
+          <span>Ubuntu Server (PC bekas / Cloud)</span>
+        </div>
+        <div class="hw-item">
+          <strong>Backend Framework</strong>
+          <span>Node.js, Python (FastAPI/Flask), atau PHP (Laravel)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Tooling -->
+    <div class="slide slide-content" data-slide="12">
+      <h2>Alat Pendukung Pengembangan</h2>
+      <div class="hw-grid">
+        <div class="hw-item">
+          <strong>Team 1 (Hardware)</strong>
+          <span>Arduino IDE / VS Code + PlatformIO</span>
+        </div>
+        <div class="hw-item">
+          <strong>Team 2 (Backend)</strong>
+          <span>DBeaver / MySQL Workbench</span>
+        </div>
+        <div class="hw-item">
+          <strong>Team 3 (Logic)</strong>
+          <span>Postman / Insomnia (API testing)</span>
+        </div>
+        <div class="hw-item">
+          <strong>Team 4 (Frontend)</strong>
+          <span>Google Maps API Key / Mapbox</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Tugas -->
+    <div class="slide slide-content" data-slide="13">
+      <h2>Tugas!</h2>
+      <div class="task-list">
+        <div class="task-item">
+          <div class="task-num">1</div>
+          <span>Tentukan planning waktu pengerjaan project</span>
+        </div>
+        <div class="task-item">
+          <div class="task-num">2</div>
+          <span>Tentukan pembagian team</span>
+        </div>
+        <div class="task-item">
+          <div class="task-num">3</div>
+          <span>Tentukan belanja alat</span>
+        </div>
+        <div class="task-item">
+          <div class="task-num">4</div>
+          <span>Tentukan waktu uji coba</span>
+        </div>
+        <div class="task-item" style="grid-column: span 2;">
+          <div class="task-num">5</div>
+          <span>Tentukan waktu presentasi final</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: End -->
+    <div class="slide slide-title" data-slide="14">
+      <h1 style="color:#ff6b35;">TERIMA KASIH</h1>
+      <div class="tech">Monitoring Kendaraan PEMKOT SALATiga</div>
+      <div class="author">Teguh Prasetyo, S.Kom., M.Si.</div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button id="prevBtn" onclick="changeSlide(-1)" disabled>◀ Sebelumnya</button>
+    <button id="nextBtn" onclick="changeSlide(1)">Selanjutnya ▶</button>
+  </div>
+
+  <div class="watermark">© PEMKOT SALATIGA</div>
+
+  <script>
+    // Anti-copy / anti-select
+    document.addEventListener('selectstart', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // Also block drag
+    document.addEventListener('dragstart', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('copy', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // Slide navigation
+    let currentSlide = 1;
+    const totalSlides = 14;
+
+    function showSlide(n) {
+      const slides = document.querySelectorAll('.slide');
+      
+      if (n > totalSlides) currentSlide = totalSlides;
+      if (n < 1) currentSlide = 1;
+
+      slides.forEach(slide => slide.classList.remove('active'));
+      slides[currentSlide - 1].classList.add('active');
+
+      // Update progress
+      const progress = (currentSlide / totalSlides) * 100;
+      document.getElementById('progress').style.width = progress + '%';
+
+      // Update counter
+      document.getElementById('counter').textContent = currentSlide + ' / ' + totalSlides;
+
+      // Update buttons
+      document.getElementById('prevBtn').disabled = currentSlide === 1;
+      document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+    }
+
+    function changeSlide(direction) {
+      currentSlide += direction;
+      showSlide(currentSlide);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        changeSlide(-1);
+      }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    document.addEventListener('touchstart', function(e) {
+      touchStartX = e.touches[0].clientX;
+    });
+
+    document.addEventListener('touchend', function(e) {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) changeSlide(1);
+        else changeSlide(-1);
+      }
+    });
+
+    // Block ctrl+p (print)
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        e.preventDefault();
+        return false;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Block print
+    window.onbeforeprint = function() {
+      return false;
+    };
+
+    // Init
+    showSlide(1);
+  </script>
+</body>
+</html>
