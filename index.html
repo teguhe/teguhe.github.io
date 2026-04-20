@@ -1,959 +1,637 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Teguh Prasetyo — Software Developer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MONITORING KENDARAAN PEMKOT SALATIGA</title>
   <style>
-    :root {
-      --ink: #0e0e0e;
-      --paper: #f5f0e8;
-      --paper-alt: #ede8dc;
-      --accent: #c0392b;
-      --accent2: #1a4a7a;
-      --rule: #0e0e0e;
-      --faint: #d0c8b8;
-      --mono: 'Space Mono', monospace;
-      --serif: 'DM Serif Display', Georgia, serif;
-      --body: 'Crimson Pro', Georgia, serif;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--body);
-      font-size: 18px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ─── NOISE TEXTURE OVERLAY ─── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9999;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-      opacity: 0.6;
-    }
-
-    /* ─── SCROLLBAR ─── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--paper); }
-    ::-webkit-scrollbar-thumb { background: var(--ink); }
-
-    /* ─── HEADER / HERO ─── */
-    header {
-      position: relative;
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-bottom: 2px solid var(--ink);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f1923;
+      color: #fff;
       overflow: hidden;
+      height: 100vh;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
-    .header-left {
-      padding: 4rem 3rem 4rem 4rem;
-      border-right: 2px solid var(--ink);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-    }
-
-    .header-right {
-      padding: 4rem 4rem 4rem 3rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      background: var(--ink);
-      color: var(--paper);
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Cross-hatch pattern on right panel */
-    .header-right::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(
-          45deg,
-          transparent,
-          transparent 20px,
-          rgba(245,240,232,0.04) 20px,
-          rgba(245,240,232,0.04) 21px
-        ),
-        repeating-linear-gradient(
-          -45deg,
-          transparent,
-          transparent 20px,
-          rgba(245,240,232,0.04) 20px,
-          rgba(245,240,232,0.04) 21px
-        );
-    }
-
-    .site-label {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 3rem;
-    }
-
-    .hero-name {
-      font-family: var(--serif);
-      font-size: clamp(3rem, 7vw, 6rem);
-      line-height: 1.0;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
-    }
-
-    .hero-degree {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      color: #888;
-      margin-bottom: 2rem;
-    }
-
-    .hero-tagline {
-      font-family: var(--body);
-      font-style: italic;
-      font-size: 1.25rem;
-      color: #555;
-      max-width: 340px;
-      border-left: 3px solid var(--accent);
-      padding-left: 1rem;
-      line-height: 1.5;
-    }
-
-    /* Right panel content */
-    .hero-stack-label {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(245,240,232,0.4);
-      margin-bottom: 1.5rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-stack {
-      position: relative;
-      z-index: 1;
-    }
-
-    .stack-item {
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-      margin-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(245,240,232,0.12);
-      padding-bottom: 0.5rem;
-    }
-
-    .stack-item:last-child { border-bottom: none; }
-
-    .stack-num {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      color: var(--accent);
-      width: 2ch;
-      flex-shrink: 0;
-    }
-
-    .stack-name {
-      font-family: var(--serif);
-      font-size: 1.6rem;
-      line-height: 1.1;
-      letter-spacing: -0.01em;
-    }
-
-    .stack-cat {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      color: rgba(245,240,232,0.35);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-left: auto;
-    }
-
-    .nav-links {
-      position: absolute;
-      top: 4rem;
-      right: 4rem;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      align-items: flex-end;
-    }
-
-    .nav-links a {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(245,240,232,0.5);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--paper); }
-
-    /* ─── SECTION BASE ─── */
-    section {
-      border-bottom: 2px solid var(--ink);
-    }
-
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      gap: 2rem;
-      padding: 2rem 4rem;
-      border-bottom: 1px solid var(--faint);
-    }
-
-    .section-num {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-    }
-
-    .section-title {
-      font-family: var(--serif);
-      font-size: 2.2rem;
-      letter-spacing: -0.02em;
-      line-height: 1;
-    }
-
-    .section-body {
-      padding: 3rem 4rem;
-    }
-
-    /* ─── ABOUT ─── */
-    #about .section-body {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-    }
-
-    .about-text p {
-      font-size: 1.15rem;
-      color: #333;
-      margin-bottom: 1rem;
-      line-height: 1.7;
-    }
-
-    .about-meta {
-      border-left: 2px solid var(--faint);
-      padding-left: 2rem;
-    }
-
-    .meta-row {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1.8rem;
-    }
-
-    .meta-label {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #999;
-      margin-bottom: 0.2rem;
-    }
-
-    .meta-value {
-      font-family: var(--body);
-      font-size: 1rem;
-      color: var(--ink);
-      font-weight: 600;
-    }
-
-    /* ─── SKILLS ─── */
-    #skills .section-body {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-    }
-
-    .skill-group {
-      padding: 2rem;
-      border-right: 1px solid var(--faint);
-    }
-
-    .skill-group:last-child { border-right: none; }
-
-    .skill-group-label {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-    }
-
-    .skill-tag {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      padding: 0.3rem 0.7rem;
-      border: 1px solid var(--ink);
-      margin: 0.2rem;
-      transition: background 0.15s, color 0.15s;
-      cursor: default;
-    }
-
-    .skill-tag:hover {
-      background: var(--ink);
-      color: var(--paper);
-    }
-
-    .skill-tag.primary {
-      background: var(--ink);
-      color: var(--paper);
-    }
-
-    /* ─── SHOWCASE / PROJECTS ─── */
-    #showcase .section-body {
-      padding: 0;
-    }
-
-    .showcase-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .showcase-item {
-      padding: 1.8rem 2rem;
-      border-right: 1px solid var(--faint);
-      border-bottom: 1px solid var(--faint);
-      text-decoration: none;
-      color: var(--ink);
-      display: block;
-      position: relative;
-      transition: background 0.15s;
-      overflow: hidden;
-    }
-
-    .showcase-item:nth-child(3n) { border-right: none; }
-
-    .showcase-item::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--accent);
-      transition: width 0.3s ease;
-    }
-
-    .showcase-item:hover { background: var(--paper-alt); }
-    .showcase-item:hover::before { width: 100%; }
-
-    .showcase-num {
-      font-family: var(--mono);
-      font-size: 0.55rem;
-      color: #bbb;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.6rem;
-    }
-
-    .showcase-name {
-      font-family: var(--serif);
-      font-size: 1.2rem;
-      margin-bottom: 0.3rem;
-      line-height: 1.2;
-    }
-
-    .showcase-desc {
-      font-size: 0.85rem;
-      color: #777;
-      font-family: var(--mono);
-    }
-
-    .showcase-arrow {
-      position: absolute;
-      top: 1.8rem;
-      right: 1.5rem;
-      font-size: 1rem;
-      color: #ccc;
-      transition: transform 0.2s, color 0.2s;
-    }
-
-    .showcase-item:hover .showcase-arrow {
-      transform: translate(3px, -3px);
-      color: var(--accent);
-    }
-
-    /* ─── CONTACT ─── */
-    #contact .section-body {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-    }
-
-    .contact-intro {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 1.8rem;
-      line-height: 1.3;
-      letter-spacing: -0.01em;
-      margin-bottom: 2rem;
-    }
-
-    .contact-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--faint);
-      text-decoration: none;
-      color: var(--ink);
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
-      transition: padding-left 0.2s;
-    }
-
-    .contact-link:hover { padding-left: 0.5rem; }
-
-    .contact-link-icon {
-      width: 1.5rem;
-      height: 1.5rem;
-      border: 1px solid var(--ink);
+    .slide-container {
+      width: 100vw;
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.7rem;
-      flex-shrink: 0;
     }
 
-    .contact-link-label {
-      color: #999;
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 0.1rem;
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1200px;
+      padding: 60px 80px;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
     }
 
-    .contact-link-value {
-      display: block;
-      font-size: 0.85rem;
-    }
+    .slide.active { display: block; }
 
-    /* Map/address placeholder */
-    .contact-map {
-      background: var(--ink);
-      color: var(--paper);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 3rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .contact-map::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(245,240,232,0.05) 30px, rgba(245,240,232,0.05) 31px),
-        repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(245,240,232,0.05) 30px, rgba(245,240,232,0.05) 31px);
-    }
-
-    .map-location {
-      position: relative;
-      z-index: 1;
-    }
-
-    .map-label {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-
-    .map-city {
-      font-family: var(--serif);
-      font-size: 3rem;
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-
-    .map-detail {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: rgba(245,240,232,0.5);
-    }
-
-    /* ─── FOOTER ─── */
-    footer {
-      padding: 1.5rem 4rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-copy {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      color: #aaa;
-      letter-spacing: 0.1em;
-    }
-
-    .footer-name {
-      font-family: var(--serif);
-      font-size: 1rem;
-      color: #aaa;
-    }
-
-    /* ─── DECORATIVE ELEMENTS ─── */
-    .corner-mark {
-      position: absolute;
-      font-family: var(--mono);
-      font-size: 0.55rem;
-      color: rgba(245,240,232,0.2);
-      letter-spacing: 0.1em;
-    }
-
-    .corner-mark.tl { top: 1.5rem; left: 1.5rem; }
-    .corner-mark.br { bottom: 1.5rem; right: 1.5rem; }
-
-    /* ─── FADE IN ANIMATIONS ─── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .fade-up {
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards;
+    /* Title Slide */
+    .slide-title {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     }
 
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.25s; }
-    .delay-3 { animation-delay: 0.4s; }
-    .delay-4 { animation-delay: 0.55s; }
-    .delay-5 { animation-delay: 0.7s; }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 900px) {
-      header {
-        grid-template-columns: 1fr;
-        min-height: unset;
-      }
-
-      .header-left {
-        border-right: none;
-        border-bottom: 2px solid var(--ink);
-        padding: 3rem 2rem;
-      }
-
-      .header-right {
-        padding: 3rem 2rem 3rem;
-        min-height: 50vh;
-      }
-
-      .nav-links {
-        position: static;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        margin-bottom: 2rem;
-        gap: 1rem;
-      }
-
-      .nav-links a { color: rgba(245,240,232,0.6); }
-
-      #about .section-body,
-      #contact .section-body {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
-      #skills .section-body {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .skill-group {
-        border-right: none;
-        border-bottom: 1px solid var(--faint);
-      }
-
-      .showcase-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .showcase-item:nth-child(3n) { border-right: 1px solid var(--faint); }
-      .showcase-item:nth-child(2n) { border-right: none; }
-
-      .section-header, .section-body { padding: 2rem; }
-      footer { padding: 1.5rem 2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    .slide-title h1 {
+      font-size: 3.2em;
+      color: #00d4ff;
+      text-shadow: 0 0 30px rgba(0,212,255,0.3);
+      margin-bottom: 20px;
     }
 
-    @media (max-width: 600px) {
-      .showcase-grid { grid-template-columns: 1fr; }
-      .showcase-item { border-right: none !important; }
-      .hero-name { font-size: 2.8rem; }
+    .slide-title .tech {
+      font-size: 1.4em;
+      color: #ff6b35;
+      margin: 30px 0;
+      font-weight: bold;
+    }
+
+    .slide-title .author {
+      font-size: 1.3em;
+      color: #aaa;
+      margin-top: 40px;
+    }
+
+    /* Section Slide */
+    .slide-section {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    .slide-section h2 {
+      font-size: 3em;
+      color: #00d4ff;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+    }
+
+    /* Content Slide */
+    .slide-content {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+    }
+
+    .slide-content h2 {
+      font-size: 2.2em;
+      color: #00d4ff;
+      margin-bottom: 40px;
+      text-align: left;
+      border-bottom: 3px solid #ff6b35;
+      padding-bottom: 15px;
+    }
+
+    .slide-content ul {
+      list-style: none;
+      text-align: left;
+      font-size: 1.4em;
+      line-height: 2.2;
+    }
+
+    .slide-content ul li {
+      padding-left: 35px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .slide-content ul li::before {
+      content: "▸";
+      color: #ff6b35;
+      position: absolute;
+      left: 0;
+      font-size: 1.2em;
+    }
+
+    /* Team Slide */
+    .team-box {
+      background: rgba(0,212,255,0.08);
+      border: 2px solid #00d4ff;
+      border-radius: 15px;
+      padding: 30px 40px;
+      text-align: left;
+      margin-bottom: 25px;
+    }
+
+    .team-box h3 {
+      color: #ff6b35;
+      font-size: 1.5em;
+      margin-bottom: 15px;
+    }
+
+    .team-box p {
+      font-size: 1.1em;
+      line-height: 1.8;
+      color: #ddd;
+    }
+
+    .team-box .highlight {
+      color: #00d4ff;
+      font-weight: bold;
+    }
+
+    /* JSON Slide */
+    .json-box {
+      background: #0d1117;
+      border: 2px solid #00d4ff;
+      border-radius: 10px;
+      padding: 30px 40px;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1em;
+      color: #7ee787;
+      line-height: 1.8;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    /* Hardware Grid */
+    .hw-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      text-align: left;
+      font-size: 1.15em;
+    }
+
+    .hw-item {
+      background: rgba(255,107,53,0.1);
+      border-left: 4px solid #ff6b35;
+      padding: 15px 20px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .hw-item strong { color: #00d4ff; }
+    .hw-item span { color: #ddd; display: block; margin-top: 5px; }
+
+    /* Task Slide */
+    .task-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      text-align: left;
+      font-size: 1.15em;
+    }
+
+    .task-item {
+      background: rgba(0,212,255,0.1);
+      border: 1px solid #00d4ff;
+      padding: 20px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .task-num {
+      background: #ff6b35;
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 100;
+    }
+
+    .nav button {
+      background: rgba(0,212,255,0.15);
+      border: 2px solid #00d4ff;
+      color: #00d4ff;
+      padding: 12px 30px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s;
+    }
+
+    .nav button:hover {
+      background: #00d4ff;
+      color: #0f1923;
+    }
+
+    .nav button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Progress */
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: #ff6b35;
+      transition: width 0.3s;
+    }
+
+    /* Slide Counter */
+    .counter {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 1.1em;
+      color: #666;
+    }
+
+    /* Watermark */
+    .watermark {
+      position: fixed;
+      bottom: 15px;
+      right: 30px;
+      font-size: 0.85em;
+      color: #333;
+    }
+
+    /* Protection overlay - makes copy difficult */
+    .protect-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    /* Right click block indicator */
+    .slide-content::after {
+      content: "";
+      display: block;
     }
   </style>
 </head>
 <body>
+  <div class="protect-overlay"></div>
+  <div class="progress" id="progress"></div>
+  <div class="counter" id="counter">1 / 14</div>
 
-  <!-- ══════════════════════════════ HERO ══════════════════════════════ -->
-  <header>
-    <div class="header-left">
-      <div>
-        <div class="site-label fade-up delay-1">Personal Portfolio — v1.0</div>
-        <h1 class="hero-name fade-up delay-2">Teguh<br>Prasetyo</h1>
-        <div class="hero-degree fade-up delay-3">S.Kom., M.Si.</div>
-        <p class="hero-tagline fade-up delay-4">
-          Building systems that work — from enterprise desktop apps to mobile and the web.
-        </p>
-      </div>
-      <div class="fade-up delay-5" style="font-family: var(--mono); font-size: 0.6rem; color: #bbb; letter-spacing: 0.1em;">
-        SALATIGA, CENTRAL JAVA — ID
-      </div>
+  <div class="slide-container">
+    <!-- Slide 1: Title -->
+    <div class="slide slide-title active" data-slide="1">
+      <h1>MONITORING KENDARAAN</h1>
+      <h1 style="color:#fff; font-size:2.5em;">PEMKOT SALATIGA</h1>
+      <div class="tech">ESP32 + NEO-6M + SIM800L</div>
+      <div class="author">Teguh Prasetyo, S.Kom., M.Si.</div>
     </div>
 
-    <div class="header-right">
-      <span class="corner-mark tl">STACK &amp; TOOLS</span>
-      <span class="corner-mark br">EST. ––</span>
-
-      <nav class="nav-links">
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#showcase">Showcase</a>
-        <a href="#contact">Contact</a>
-        <a href="https://github.com/teguhe" target="_blank">GitHub ↗</a>
-      </nav>
-
-      <div class="hero-stack-label">Core Technologies</div>
-      <div class="hero-stack fade-up delay-2">
-        <div class="stack-item">
-          <span class="stack-num">01</span>
-          <span class="stack-name">Delphi</span>
-          <span class="stack-cat">Desktop / Win32</span>
-        </div>
-        <div class="stack-item">
-          <span class="stack-num">02</span>
-          <span class="stack-name">Laravel</span>
-          <span class="stack-cat">Backend / PHP</span>
-        </div>
-        <div class="stack-item">
-          <span class="stack-num">03</span>
-          <span class="stack-name">Android Studio</span>
-          <span class="stack-cat">Mobile / Java-Kotlin</span>
-        </div>
-        <div class="stack-item">
-          <span class="stack-num">04</span>
-          <span class="stack-name">SQL</span>
-          <span class="stack-cat">Database Engineer</span>
-        </div>
-        <div class="stack-item">
-          <span class="stack-num">05</span>
-          <span class="stack-name">Linux</span>
-          <span class="stack-cat">System Administrator</span>
-        </div>
-      </div>
+    <!-- Slide 2: Tujuan Monitoring -->
+    <div class="slide slide-content" data-slide="2">
+      <h2>Tujuan Monitoring</h2>
+      <ul>
+        <li>Kendaraan pengangkut sampah</li>
+        <li>Ambulan</li>
+        <li>Mobil dinas</li>
+        <li>Dan kendaraan lainnya</li>
+      </ul>
     </div>
-  </header>
 
-  <!-- ══════════════════════════════ ABOUT ══════════════════════════════ -->
-  <section id="about">
-    <div class="section-header">
-      <span class="section-num">§ 01</span>
-      <h2 class="section-title">About</h2>
+    <!-- Slide 3: Jenis Kendaraan -->
+    <div class="slide slide-content" data-slide="3">
+      <h2>Jenis Kendaraan</h2>
+      <ul>
+        <li>Motor</li>
+        <li>Roda 3</li>
+        <li>Mobil</li>
+        <li>Truk</li>
+        <li>Lainnya</li>
+      </ul>
     </div>
-    <div class="section-body">
-      <div class="about-text">
+
+    <!-- Slide 4: Pembagian Team -->
+    <div class="slide slide-content" data-slide="4">
+      <h2>Pembagian Team</h2>
+      <ul>
+        <li>1 team terdiri dari 2-4 orang</li>
+        <li>Team bisa fleksibel, boleh pindah team</li>
+        <li>Tentukan team sebelum mulai mengerjakan</li>
+      </ul>
+    </div>
+
+    <!-- Slide 5: Team 1 -->
+    <div class="slide slide-content" data-slide="5">
+      <h2>Team 1: Hardware Engineer</h2>
+      <div class="team-box">
+        <h3>Firmware & Payload Standardization</h3>
         <p>
-          Saya seorang Software Developer dan Database Engineer dengan pengalaman membangun sistem di berbagai platform — dari aplikasi desktop enterprise berbasis Delphi, backend web dengan Laravel, hingga aplikasi mobile Android.
+          Membuat firmware yang menyertakan <span class="highlight">Vehicle_ID</span> dan 
+          <span class="highlight">Vehicle_Type</span> (1=Motor, 2=Mobil, 3=Truk) dalam setiap paket data.
         </p>
+        <p style="margin-top:15px;">
+          Mengatur interval pengiriman data<br>
+          Implementasi protokol <span class="highlight">JSON via MQTT</span>
+        </p>
+      </div>
+      <div class="team-box" style="border-color: #ff6b35;">
+        <p><strong style="color:#ff6b35;">⚠ Ketergantungan:</strong> Team 2 tidak bisa memproses data jika struktur JSON dari Team 1 belum didefinisikan.</p>
+      </div>
+    </div>
+
+    <!-- Slide 6: Sample JSON -->
+    <div class="slide slide-content" data-slide="6">
+      <h2>Sample JSON</h2>
+      <div class="json-box">{
+  "v_id": "TRUCK-01",
+  "v_type": "heavy_truck",
+  "lat": -7.3305,
+  "lng": 110.5084,
+  "speed": 60,
+  "timestamp": "2026-04-20T10:00:00Z"
+}</div>
+    </div>
+
+    <!-- Slide 7: Team 2 -->
+    <div class="slide slide-content" data-slide="7">
+      <h2>Team 2: Backend & Database Architect</h2>
+      <div class="team-box">
+        <h3>Multi-Vehicle Handling</h3>
         <p>
-          Dengan latar belakang akademis di bidang Ilmu Komputer (S.Kom.) dan Akuntansi (M.Si.), saya memahami permasalahan teknis sekaligus kebutuhan bisnis di balik sebuah sistem.
+          Merancang database (<span class="highlight">PostgreSQL + PostGIS</span> atau MySQL Spatial) 
+          untuk menyimpan koordinat geografis.
         </p>
+        <p style="margin-top:15px;">
+          Membuat tabel Vehicles<br>
+          Membangun API yang memisahkan data berdasarkan ID kendaraan
+        </p>
+      </div>
+      <div class="team-box" style="border-color: #ff6b35;">
+        <p><strong style="color:#ff6b35;">⚠ Ketergantungan:</strong> Team 3 tidak bisa menghitung statistik jika data tidak tersimpan dalam struktur multi-vehicle.</p>
+      </div>
+    </div>
+
+    <!-- Slide 8: Team 3 -->
+    <div class="slide slide-content" data-slide="8">
+      <h2>Team 3: Logic & Analytics Developer</h2>
+      <div class="team-box">
+        <h3>Engine Rules & Alerts</h3>
         <p>
-          Minat utama saya ada pada perancangan database yang efisien, arsitektur aplikasi yang solid, dan pengembangan solusi yang benar-benar bisa dipakai — bukan sekadar bisa jalan.
+          <span class="highlight">Geofencing</span> — Mendeteksi jika kendaraan keluar dari area yang ditentukan
+        </p>
+        <p style="margin-top:15px;">
+          <span class="highlight">Behavior Analytics</span> — Menghitung kecepatan rata-rata untuk deteksi overspeeding<br>
+          <span class="highlight">Maintenance Reminder</span> — Peringatan servis berdasarkan total jarak tempuh
         </p>
       </div>
-      <div class="about-meta">
-        <div class="meta-row">
-          <span class="meta-label">Pendidikan</span>
-          <span class="meta-value">S.Kom. — Teknik Informatika</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">Gelar Lanjut</span>
-          <span class="meta-value">M.Si. — Akuntansi</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">Spesialisasi</span>
-          <span class="meta-value">Software Dev · Database Engineering</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">Platform</span>
-          <span class="meta-value">Desktop · Web · Mobile · Linux</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">GitHub</span>
-          <span class="meta-value"><a href="https://github.com/teguhe" target="_blank" style="color: var(--accent2); text-decoration: none;">github.com/teguhe ↗</a></span>
-        </div>
+      <div class="team-box" style="border-color: #ff6b35;">
+        <p><strong style="color:#ff6b35;">⚠ Ketergantungan:</strong> Team 4 tidak bisa menampilkan peringatan jika logikanya belum matang.</p>
       </div>
     </div>
-  </section>
 
-  <!-- ══════════════════════════════ SKILLS ══════════════════════════════ -->
-  <section id="skills">
-    <div class="section-header">
-      <span class="section-num">§ 02</span>
-      <h2 class="section-title">Skills</h2>
-    </div>
-    <div class="section-body">
-      <div class="skill-group">
-        <div class="skill-group-label">Desktop Development</div>
-        <span class="skill-tag primary">Delphi / Pascal</span>
-        <span class="skill-tag primary">FireMonkey (FMX)</span>
-        <span class="skill-tag">VCL Components</span>
-        <span class="skill-tag">Windows API</span>
-        <span class="skill-tag">FastReport</span>
-        <span class="skill-tag">DevExpress</span>
-        <span class="skill-tag">COM / ActiveX</span>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-label">Web &amp; Mobile</div>
-        <span class="skill-tag primary">Laravel (PHP)</span>
-        <span class="skill-tag primary">Android Studio</span>
-        <span class="skill-tag">Kotlin</span>
-        <span class="skill-tag">Java</span>
-        <span class="skill-tag">Blade Templating</span>
-        <span class="skill-tag">REST API</span>
-        <span class="skill-tag">HTML / CSS / JS</span>
-        <span class="skill-tag">Bootstrap</span>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-label">Database Engineering</div>
-        <span class="skill-tag primary">MySQL</span>
-        <span class="skill-tag primary">PostgreSQL</span>
-        <span class="skill-tag primary">SQL Server</span>
-        <span class="skill-tag">Firebird</span>
-        <span class="skill-tag">Oracle</span>
-        <span class="skill-tag">Query Optimization</span>
-        <span class="skill-tag">Schema Design</span>
-        <span class="skill-tag">Stored Procedure</span>
-        <span class="skill-tag">Data Migration</span>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-label">Linux System Administration</div>
-        <span class="skill-tag primary">Ubuntu / Debian</span>
-        <span class="skill-tag primary">CentOS / RHEL</span>
-        <span class="skill-tag">Shell Scripting (Bash)</span>
-        <span class="skill-tag">Nginx / Apache</span>
-        <span class="skill-tag">SSH / OpenSSH</span>
-        <span class="skill-tag">Cron Jobs</span>
-        <span class="skill-tag">Firewall (UFW / iptables)</span>
-        <span class="skill-tag">Systemd</span>
-        <span class="skill-tag">Docker</span>
+    <!-- Slide 9: Team 4 -->
+    <div class="slide slide-content" data-slide="9">
+      <h2>Team 4: Frontend Developer</h2>
+      <div class="team-box">
+        <h3>Management Dashboard</h3>
+        <p>
+          <span class="highlight">Live Map View</span> — Menampilkan banyak marker kendaraan di peta dengan ikon berbeda (motor, mobil, truk)
+        </p>
+        <p style="margin-top:15px;">
+          <span class="highlight">Vehicle Switching</span> — Pilih kendaraan dan lihat riwayat perjalanan (history playback)<br>
+          <span class="highlight">Filtering</span> — Filter "hanya truk yang sedang aktif" atau "motor yang sedang berhenti"
+        </p>
       </div>
     </div>
-  </section>
 
-  <!-- ══════════════════════════════ SHOWCASE ══════════════════════════════ -->
-  <section id="showcase">
-    <div class="section-header">
-      <span class="section-num">§ 03</span>
-      <h2 class="section-title">Showcase</h2>
-    </div>
-    <div class="section-body">
-      <div class="showcase-grid">
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">001</div>
-          <div class="showcase-name">Project Alpha</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">002</div>
-          <div class="showcase-name">Project Beta</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">003</div>
-          <div class="showcase-name">Project Gamma</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">004</div>
-          <div class="showcase-name">Project Delta</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">005</div>
-          <div class="showcase-name">Project Epsilon</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">006</div>
-          <div class="showcase-name">Project Zeta</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">007</div>
-          <div class="showcase-name">Project Eta</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">008</div>
-          <div class="showcase-name">Project Theta</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">009</div>
-          <div class="showcase-name">Project Iota</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">010</div>
-          <div class="showcase-name">Project Kappa</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">011</div>
-          <div class="showcase-name">Project Lambda</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">012</div>
-          <div class="showcase-name">Project Mu</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">013</div>
-          <div class="showcase-name">Project Nu</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">014</div>
-          <div class="showcase-name">Project Xi</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-        <a href="#" class="showcase-item">
-          <div class="showcase-num">015</div>
-          <div class="showcase-name">Project Omicron</div>
-          <div class="showcase-desc">Deskripsi singkat proyek</div>
-          <span class="showcase-arrow">↗</span>
-        </a>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════ CONTACT ══════════════════════════════ -->
-  <section id="contact">
-    <div class="section-header">
-      <span class="section-num">§ 04</span>
-      <h2 class="section-title">Kontak</h2>
-    </div>
-    <div class="section-body">
-      <div>
-        <p class="contact-intro">Ada proyek yang ingin dikerjakan bersama? Hubungi saya.</p>
-        <div class="contact-links">
-          <a href="/cdn-cgi/l/email-protection#86f2e3e1f3eec6e3fee7ebf6eae3a8e5e9eb" class="contact-link">
-            <div class="contact-link-icon">@</div>
-            <div>
-              <span class="contact-link-label">Email</span>
-              <span class="contact-link-value"><span class="__cf_email__" data-cfemail="89fdeceefce1c9ecf1e8e4f9e5eca7eae6e4">teguhe@gmail.com</span></span>
-            </div>
-          </a>
-          <a href="https://github.com/teguhe" target="_blank" class="contact-link">
-            <div class="contact-link-icon">GH</div>
-            <div>
-              <span class="contact-link-label">GitHub</span>
-              <span class="contact-link-value">github.com/teguhe</span>
-            </div>
-          </a>
-          <a href="https://www.linkedin.com/in/teguh-prasetyo-05a78a126/" target="_blank" class="contact-link">
-            <div class="contact-link-icon">in</div>
-            <div>
-              <span class="contact-link-label">LinkedIn</span>
-              <span class="contact-link-value">Teguh Prasetyo</span>
-            </div>
-          </a>
-          <a href="tel:+628123456789" class="contact-link">
-            <div class="contact-link-icon">☎</div>
-            <div>
-              <span class="contact-link-label">WhatsApp / Phone</span>
-              <span class="contact-link-value">+62 83838 447 821</span>
-            </div>
-          </a>
+    <!-- Slide 10: Perangkat Keras -->
+    <div class="slide slide-content" data-slide="10">
+      <h2>Perangkat Keras (Sisi Kendaraan/Node)</h2>
+      <div class="hw-grid">
+        <div class="hw-item">
+          <strong>Mikrokontroler</strong>
+          <span>ESP32 (Dual-Core, stabil untuk GPS + Wi-Fi/GPRS)</span>
         </div>
-      </div>
-      <div class="contact-map">
-        <div class="map-location">
-          <div class="map-label">Based in</div>
-          <div class="map-city">Salatiga</div>
-          <div class="map-detail">Central Java, Indonesia<br>Open for remote collaboration worldwide</div>
+        <div class="hw-item">
+          <strong>Modul GPS</strong>
+          <span>NEO-6M atau NEO-7M (murah & akurat)</span>
+        </div>
+        <div class="hw-item">
+          <strong>Konektivitas</strong>
+          <span>SIM800L/SIM900A (GPRS/2G) atau ESP32 Wi-Fi</span>
+        </div>
+        <div class="hw-item">
+          <strong>Antena Eksternal</strong>
+          <span>Sangat disarankan untuk locking satelit lebih cepat</span>
+        </div>
+        <div class="hw-item">
+          <strong>Power Supply</strong>
+          <span>Buck Converter LM2596 (12V → 5V)</span>
+        </div>
+        <div class="hw-item">
+          <strong>Penyimpanan Cadangan</strong>
+          <span>Micro SD Card Module (offline logging)</span>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- ══════════════════════════════ FOOTER ══════════════════════════════ -->
-  <footer>
-    <span class="footer-copy">© 2025 Teguh Prasetyo — All rights reserved</span>
-    <span class="footer-name">Teguh Prasetyo, S.Kom., M.Si.</span>
-    <span class="
+    <!-- Slide 11: Infrastruktur -->
+    <div class="slide slide-content" data-slide="11">
+      <h2>Infrastruktur Server & Database</h2>
+      <div class="hw-grid">
+        <div class="hw-item">
+          <strong>Database</strong>
+          <span>MySQL 8.0+ (ST_Distance_Sphere & indeks spasial)</span>
+        </div>
+        <div class="hw-item">
+          <strong>MQTT Broker</strong>
+          <span>Mosquitto (standar protokol IoT)</span>
+        </div>
+        <div class="hw-item">
+          <strong>Application Server</strong>
+          <span>Ubuntu Server (PC bekas / Cloud)</span>
+        </div>
+        <div class="hw-item">
+          <strong>Backend Framework</strong>
+          <span>Node.js, Python (FastAPI/Flask), atau PHP (Laravel)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Tooling -->
+    <div class="slide slide-content" data-slide="12">
+      <h2>Alat Pendukung Pengembangan</h2>
+      <div class="hw-grid">
+        <div class="hw-item">
+          <strong>Team 1 (Hardware)</strong>
+          <span>Arduino IDE / VS Code + PlatformIO</span>
+        </div>
+        <div class="hw-item">
+          <strong>Team 2 (Backend)</strong>
+          <span>DBeaver / MySQL Workbench</span>
+        </div>
+        <div class="hw-item">
+          <strong>Team 3 (Logic)</strong>
+          <span>Postman / Insomnia (API testing)</span>
+        </div>
+        <div class="hw-item">
+          <strong>Team 4 (Frontend)</strong>
+          <span>Google Maps API Key / Mapbox</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Tugas -->
+    <div class="slide slide-content" data-slide="13">
+      <h2>Tugas!</h2>
+      <div class="task-list">
+        <div class="task-item">
+          <div class="task-num">1</div>
+          <span>Tentukan planning waktu pengerjaan project</span>
+        </div>
+        <div class="task-item">
+          <div class="task-num">2</div>
+          <span>Tentukan pembagian team</span>
+        </div>
+        <div class="task-item">
+          <div class="task-num">3</div>
+          <span>Tentukan belanja alat</span>
+        </div>
+        <div class="task-item">
+          <div class="task-num">4</div>
+          <span>Tentukan waktu uji coba</span>
+        </div>
+        <div class="task-item" style="grid-column: span 2;">
+          <div class="task-num">5</div>
+          <span>Tentukan waktu presentasi final</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: End -->
+    <div class="slide slide-title" data-slide="14">
+      <h1 style="color:#ff6b35;">TERIMA KASIH</h1>
+      <div class="tech">Monitoring Kendaraan PEMKOT SALATiga</div>
+      <div class="author">Teguh Prasetyo, S.Kom., M.Si.</div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button id="prevBtn" onclick="changeSlide(-1)" disabled>◀ Sebelumnya</button>
+    <button id="nextBtn" onclick="changeSlide(1)">Selanjutnya ▶</button>
+  </div>
+
+  <div class="watermark">© PEMKOT SALATIGA</div>
+
+  <script>
+    // Anti-copy / anti-select
+    document.addEventListener('selectstart', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // Also block drag
+    document.addEventListener('dragstart', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('copy', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // Slide navigation
+    let currentSlide = 1;
+    const totalSlides = 14;
+
+    function showSlide(n) {
+      const slides = document.querySelectorAll('.slide');
+      
+      if (n > totalSlides) currentSlide = totalSlides;
+      if (n < 1) currentSlide = 1;
+
+      slides.forEach(slide => slide.classList.remove('active'));
+      slides[currentSlide - 1].classList.add('active');
+
+      // Update progress
+      const progress = (currentSlide / totalSlides) * 100;
+      document.getElementById('progress').style.width = progress + '%';
+
+      // Update counter
+      document.getElementById('counter').textContent = currentSlide + ' / ' + totalSlides;
+
+      // Update buttons
+      document.getElementById('prevBtn').disabled = currentSlide === 1;
+      document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+    }
+
+    function changeSlide(direction) {
+      currentSlide += direction;
+      showSlide(currentSlide);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        changeSlide(-1);
+      }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    document.addEventListener('touchstart', function(e) {
+      touchStartX = e.touches[0].clientX;
+    });
+
+    document.addEventListener('touchend', function(e) {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) changeSlide(1);
+        else changeSlide(-1);
+      }
+    });
+
+    // Block ctrl+p (print)
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        e.preventDefault();
+        return false;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Block print
+    window.onbeforeprint = function() {
+      return false;
+    };
+
+    // Init
+    showSlide(1);
+  </script>
+</body>
+</html>
