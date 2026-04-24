@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPMB SMP 2026 - Kota Salatiga</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f0f1a;
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .slide-container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slide {
+      min-width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 80px;
+      position: relative;
+    }
+
+    /* Slide backgrounds */
+    .bg-gradient-1 { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+    .bg-gradient-2 { background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%); }
+    .bg-blue { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+    .bg-green { background: linear-gradient(135deg, #14532d 0%, #16a34a 100%); }
+    .bg-purple { background: linear-gradient(135deg, #581c87 0%, #a855f7 100%); }
+    .bg-orange { background: linear-gradient(135deg, #9a3412 0%, #f97316 100%); }
+    .bg-teal { background: linear-gradient(135deg, #134e4a 0%, #14b8a6 100%); }
+    .bg-red { background: linear-gradient(135deg, #7f1d1d 0%, #ef4444 100%); }
+    .bg-indigo { background: linear-gradient(135deg, #312e81 0%, #6366f1 100%); }
+    .bg-dark { background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); }
+
+    .slide-number {
+      position: absolute;
+      bottom: 30px;
+      right: 40px;
+      font-size: 14px;
+      opacity: 0.5;
+    }
+
+    .logo-badge {
+      position: absolute;
+      top: 30px;
+      left: 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge .icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .logo-badge .text {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .badge-blue { background: rgba(59, 130, 246, 0.3); color: #93c5fd; }
+    .badge-green { background: rgba(22, 163, 74, 0.3); color: #86efac; }
+    .badge-orange { background: rgba(249, 115, 22, 0.3); color: #fdba74; }
+    .badge-purple { background: rgba(168, 85, 247, 0.3); color: #d8b4fe; }
+
+    h1 {
+      font-size: 72px;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 52px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 40px;
+      line-height: 1.2;
+    }
+
+    h3 {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .subtitle {
+      font-size: 28px;
+      opacity: 0.8;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .title-slide h1 {
+      font-size: 80px;
+    }
+
+    .big-number {
+      font-size: 120px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 28px 32px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .card-icon {
+      font-size: 36px;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 15px;
+      opacity: 0.7;
+      line-height: 1.5;
+    }
+
+    .timeline {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+
+    .timeline-date {
+      min-width: 160px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fbbf24;
+    }
+
+    .timeline-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #3b82f6;
+      flex-shrink: 0;
+      margin-top: 4px;
+      position: relative;
+    }
+
+    .timeline-dot::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .timeline-item:last-child .timeline-dot::after {
+      display: none;
+    }
+
+    .timeline-content {
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .info-box {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 32px 40px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .info-box h3 {
+      margin-bottom: 20px;
+    }
+
+    .info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .info-list li {
+      display: flex;
+      gap: 16px;
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    .info-list li .emoji {
+      flex-shrink: 0;
+      font-size: 28px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .col-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+
+    .col-card .emoji {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .col-card h4 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .col-card p {
+      font-size: 14px;
+      opacity: 0.7;
+      line-height: 1.5;
+    }
+
+    .cta-box {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 40px 60px;
+      text-align: center;
+    }
+
+    .cta-box h2 {
+      font-size: 44px;
+      margin-bottom: 16px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .contact-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .contact-card .icon {
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+
+    .contact-card .label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.6;
+      margin-bottom: 4px;
+    }
+
+    .contact-card .value {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .footer-note {
+      position: absolute;
+      bottom: 30px;
+      font-size: 14px;
+      opacity: 0.4;
+    }
+
+    /* Navigation */
+    .nav-dots {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .nav-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .nav-dot.active {
+      background: #fff;
+      width: 30px;
+      border-radius: 5px;
+    }
+
+    .nav-arrows {
+      position: fixed;
+      bottom: 30px;
+      right: 40px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .nav-arrow {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .slide-counter {
+      position: fixed;
+      top: 30px;
+      right: 40px;
+      font-size: 14px;
+      opacity: 0.5;
+      z-index: 100;
+    }
+
+    @media (max-width: 768px) {
+      .slide { padding: 40px 30px; }
+      h1 { font-size: 42px; }
+      h2 { font-size: 32px; }
+      .card-grid { grid-template-columns: 1fr; }
+      .three-col { grid-template-columns: 1fr; }
+      .big-number { font-size: 80px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" id="slideContainer">
+
+    <!-- Slide 1: Cover -->
+    <div class="slide bg-gradient-1 title-slide">
+      <div class="logo-badge">
+        <div class="icon">🎓</div>
+        <div class="text">Dinas Pendidikan Kota Salatiga</div>
+      </div>
+      <div>
+        <div class="badge badge-blue">SPMB 2026</div>
+        <h1>SPMB SMP 2026</h1>
+        <p class="subtitle">Seleksi Penerimaan Murid Baru<br>Sekolah Menengah Pertama<br>Kota Salatiga</p>
+        <p style="margin-top: 30px; font-size: 20px; opacity: 0.6;">Tahun Ajaran 2026/2027</p>
+      </div>
+      <div class="slide-number">01 / 10</div>
+    </div>
+
+    <!-- Slide 2: Apa itu SPMB -->
+    <div class="slide bg-blue">
+      <div class="logo-badge">
+        <div class="icon">📋</div>
+        <div class="text">SPMB SMP 2026</div>
+      </div>
+      <div class="badge badge-blue">Pendahuluan</div>
+      <h2>Apa itu SPMB?</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🏛️</div>
+          <div>
+            <div class="card-title">Seleksi Nasional</div>
+            <div class="card-desc">Proses penerimaan murid baru yang dilakukan secara teratur dan terstruktur oleh Pemerintah Kota Salatiga melalui Dinas Pendidikan.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚖️</div>
+          <div>
+            <div class="card-title">Adil & Transparan</div>
+            <div class="card-desc">Setiap calon murid mendapatkan kesempatan yang sama dalam proses seleksi tanpa memandang latar belakang ekonomi.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🗺️</div>
+          <div>
+            <div class="card-title">Sistem Zonasi</div>
+            <div class="card-desc">Prioritas diberikan kepada murid yang berdomisili dalam radius tertentu dari sekolah tujuan untuk memastikan pemerataan akses.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📱</div>
+          <div>
+            <div class="card-title">Daftar Online</div>
+            <div class="card-desc">Pendaftaran dilakukan secara daring melalui portal resmi sehingga orang tua dan calon murid tidak perlu datang ke sekolah.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">02 / 10</div>
+    </div>
+
+    <!-- Slide 3: Jadwal Penting -->
+    <div class="slide bg-dark">
+      <div class="logo-badge">
+        <div class="icon">📅</div>
+        <div class="text">SPMB SMP 2026</div>
+      </div>
+      <div class="badge badge-orange">Jadwal</div>
+      <h2>Jadwal Penting SPMB 2026</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">Mei 2026</div>
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">Pengumuman mekanisme &amp; panduan SPMB oleh Dinas Pendidikan Kota Salatiga</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Juni 2026</div>
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">Masa pendaftaran online dimulai — Orang tua/wali mengisi formulir di portal resmi</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Juni 2026</div>
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">Verifikasi data dan dokumen oleh pihak sekolah tujuan</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Juli 2026</div>
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">Pengumuman hasil seleksi penerimaan murid baru</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Juli 2026</div>
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">Masa daftar ulang bagi murid yang diterima</div>
+        </div>
+      </div>
+      <div class="slide-number">03 / 10</div>
+    </div>
+
+    <!-- Slide 4: Syarat Umum -->
+    <div class="slide bg-gradient-2">
+      <div class="logo-badge">
+        <div class="icon">✅</div>
+        <div class="text">SPMB SMP 2026</div>
+      </div>
+      <div class="badge badge-green">Syarat</div>
+      <h2>Syarat Umum Pendaftaran</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🎂</div>
+          <div>
+            <div class="card-title">Usia</div>
+            <div class="card-desc">Calon murid harus berusia maksimal 15 tahun pada tanggal 1 Juli 2026. Usia dihitung berdasarkan tanggal lahir yang tercantum dalam Akta Kelahiran.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📄</div>
+          <div>
+            <div class="card-title">Ijazah/SKHUN</div>
+            <div class="card-desc">Menyerahkan fotokopi ijazah atau Surat Keterangan Hasil Ujian Nasional (SKHUN) dari SD/MI kelas 6 yang telah dilegalisir.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏠</div>
+          <div>
+            <div class="card-title">Bukti Domisili</div>
+            <div class="card-desc">Kartu Keluarga (KK) atau Surat Keterangan Domisili sebagai dasar penentuan zonasi sekolah tujuan.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📸</div>
+          <div>
+            <div class="card-title">Pas Foto</div>
+            <div class="card-desc">Pas foto terbaru ukuran 3x4 cm berwarna dengan latar belakang merah atau biru, sebanyak 4 lembar.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">04 / 10</div>
+    </div>
+
+    <!-- Slide 5: Alur Pendaftaran -->
+    <div class="slide bg-purple">
+      <div class="logo-badge">
+        <div class="icon">🔄</div>
+        <div class="text">SPMB SMP 2026</div>
+      </div>
+      <div class="badge badge-purple">Alur</div>
+      <h2>Alur Pendaftaran Online</h2>
+      <div class="three-col">
+        <div class="col-card">
+          <div class="emoji">1️⃣</div>
+          <h4>Daftar Online</h4>
+          <p>Orang tua/wali mengakses portal pendaftaran dan mengisi formulir dengan data yang valid sesuai instruksi.</p>
+        </div>
+        <div class="col-card">
+          <div class="emoji">2️⃣</div>
+          <h4>Upload Dokumen</h4>
+          <p>Melampirkan scan/foto dokumen persyaratan seperti KK, Akta Kelahiran, dan Ijazah dalam format PDF atau JPG.</p>
+        </div>
+        <div class="col-card">
+          <div class="emoji">3️⃣</div>
+          <h4>Verifikasi</h4>
+          <p>Pihak sekolah memverifikasi data dan dokumen yang telah diunggah. Orang tua bisa memantau status verifikasi.</p>
+        </div>
+        <div class="col-card">
+          <div class="emoji">4️⃣</div>
+          <h4>Pengumuman</h4>
+          <p>Hasil seleksi diumumkan melalui portal dan bisa juga dicek melalui SMS atau website sekolah tujuan.</p>
+        </div>
+        <div class="col-card">
+          <div class="emoji">5️⃣</div>
+          <h4>Daftar Ulang</h4>
+          <p>Murid yang diterima melakukan daftar ulang dengan membawa asli dokumen untuk diverifikasi ulang.</p>
+        </div>
+        <div class="col-card">
+          <div class="emoji">6️⃣</div>
+          <h4>Masuk Sekolah</h4>
+          <p>Murid baru mengikuti masa orientasi dan mulai mengikuti kegiatan belajar mengajar di sekolah.</p>
+        </div>
+      </div>
+      <div class="slide-number">05 / 10</div>
+    </div>
+
+    <!-- Slide 6: Sistem Zonasi -->
+    <div class="slide bg-teal">
+      <div class="logo-badge">
+        <div class="icon">🗺️</div>
+        <div class="text">SPMB SMP 2026</div>
+      </div>
+      <div class="badge badge-green">Zonasi</div>
+      <h2>Sistem Zonasi</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">📍</div>
+          <div>
+            <div class="card-title">Zona Prioritas</div>
+            <div class="card-desc">60% kuota diperuntukkan bagi calon murid yang berdomisili dalam radius 5 km dari sekolah tujuan. Bukti domisili berupa KK atau Surat Keterangan Domisili.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌐</div>
+          <div>
+            <div class="card-title">Zona Luar</div>
+            <div class="card-desc">30% kuota bagi calon murid yang berada di luar zona namun masih dalam wilayah Kota Salatiga. Diutamakan yang memiliki prestasi akademik/non-akademik.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏆</div>
+          <div>
+            <div class="card-title">Jalur Prestasi</div>
+            <div class="card-desc">10% kuota diperuntukkan bagi calon murid dengan prestasi akademik luar biasa atau juara kompetisi tingkat kabupaten/kota, provinsi, atau nasional.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">💼</div>
+          <div>
+            <div class="card-title">Jalur Afirmasi</div>
+            <div class="card-desc">Kuota khusus bagi keluarga kurang mampu, penyandang disabilitas, atau anak dari keluarga yang terdaftar dalam program penanganan kemiskinan pemerintah.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">06 / 10</div>
+    </div>
+
+    <!-- Slide 7: Kuota & Data -->
+    <div class="slide bg-indigo">
+      <div class="logo-badge">
+        <div class="icon">📊</div>
+        <div class="text">SPMB SMP 2026</div>
+      </div>
+      <div class="badge badge-purple">Data</div>
+      <h2>Kuota &amp; Data SMP di Salatiga</h2>
+      <div class="three-col">
+        <div class="col-card">
+          <div class="emoji">🏫</div>
+          <h4>12 SMP Negeri</h4>
+          <p>Total 12 Sekolah Menengah Pertama Negeri yang beroperasi di Kota Salatiga dengan bervariasi kapasitas penerimaan.</p>
+        </div>
+        <div class="col-card">
+          <div class="emoji">👥</div>
+          <h4>~2.400 Kuota</h4>
+          <p>Estimasi total kuota murid baru tahun ajaran 2026/2027 untuk seluruh SMP Negeri di Kota Salatiga.</p>
+        </div>
+        <div class="col-card">
+          <div class="emoji">📈</div>
+          <h4>~3.000 Pendaftar</h4>
+          <p>Jumlah pendaftar SPMB setiap tahun terus meningkat seiring pertumbuhan penduduk Kota Salatiga.</p>
+        </div>
+      </div>
+      <div style="margin-top: 30px; text-align: center;">
+        <div class="info-box" style="max-width: 700px;">
+          <h3 style="text-align:center;">Distribusi Kuota per Sekolah</h3>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; font-size: 16px; opacity: 0.9;">
+            <div>📍 SMP Negeri 1 Salatiga — 240 siswa</div>
+            <div>📍 SMP Negeri 2 Salatiga — 240 siswa</div>
+            <div>📍 SMP Negeri 3 Salatiga — 210 siswa</div>
+            <div>📍 SMP Negeri 4 Salatiga — 210 siswa</div>
+            <div>📍 SMP Negeri 5 Salatiga — 180 siswa</div>
+            <div>📍 SMP Negeri 6 Salatiga — 180 siswa</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">07 / 10</div>
+    </div>
+
+    <!-- Slide 8: Tips Sukses -->
+    <div class="slide bg-orange">
+      <div class="logo-badge">
+        <div class="icon">💡</div>
+        <div class="text">SPMB SMP 2026</div>
+      </div>
+      <div class="badge badge-orange">Tips</div>
+      <h2>Tips Sukses SPMB</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">📝</div>
+          <div>
+            <div class="card-title">Isi Data dengan Benar</div>
+            <div class="card-desc">Pastikan semua data yang diisi sesuai dengan dokumen asli. Kesalahan data bisa menyebabkan pendaftaran tidak diproses.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🕐</div>
+          <div>
+            <div class="card-title">Jangan Tunda Pendaftaran</div>
+            <div class="card-desc">Daftar di awal periode agar mendapat cukup waktu untuk memperbaiki jika ada kesalahan. Jangan tunggu hari terakhir.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏠</div>
+          <div>
+            <div class="card-title">Pilih Sekolah Zona</div>
+            <div class="card-desc">Prioritaskan sekolah dalam zona domisili Anda karena kuota utama (60%) diperuntukkan bagi yang berada dalam zona.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📁</div>
+          <div>
+            <div class="card-title">Siapkan Dokumen Lengkap</div>
+            <div class="card-desc">Scan semua dokumen dalam format yang benar (PDF/JPG) dan pastikan kualitas gambar jelas dan terbaca.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔍</div>
+          <div>
+            <div class="card-title">Cek Status Rutin</div>
+            <div class="card-desc">Pantau terus status verifikasi melalui portal. Jika ada yang perlu diperbaiki, perbaiki secepat mungkin.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📱</div>
+          <div>
+            <div class="card-title">Simpan Bukti Pendaftaran</div>
+            <div class="card-desc">Cetak atau screenshot bukti pendaftaran dan nomor registrasi. Ini penting sebagai referensi saat daftar ulang.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">08 / 10</div>
+    </div>
+
+    <!-- Slide 9: Kontak & Bantuan -->
+    <div class="slide bg-red">
+      <div class="logo-badge">
+        <div class="icon">📞</div>
+        <div class="text">SPMB SMP 2026</div>
+      </div>
+      <div class="badge badge-orange">Kontak</div>
+      <h2>Informasi &amp; Bantuan</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="icon">🏢</div>
+          <div>
+            <div class="label">Kantor Dinas Pendidikan</div>
+            <div class="value">Dinas Pendidikan Kota Salatiga<br>Jl. Achmad Yani No. 75, Salatiga</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="icon">🌐</div>
+          <div>
+            <div class="label">Portal Resmi</div>
+            <div class="value">ppdb.jatengprov.go.id<br>(Portal PPDB Jawa Tengah)</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="icon">📞</div>
+          <div>
+            <div class="label">Hotline</div>
+            <div class="value">(0298) 326 116<br>Senin - Jumat, 08.00 - 16.00 WIB</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="icon">✉️</div>
+          <div>
+            <div class="label">Email</div>
+            <div class="value">disdik@salatigakota.go.id</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 30px; text-align: center;">
+        <div class="info-box" style="background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3);">
+          <h3>⚠️ Perhatian</h3>
+          <p style="font-size: 17px; line-height: 1.6; opacity: 0.9;">
+            Informasi resmi SPMB hanya dikeluarkan melalui portal <strong>ppdb.jatengprov.go.id</strong> dan website resmi <strong>Dinas Pendidikan Kota Salatiga</strong>. Jangan percaya informasi dari sumber tidak resmi yang menjanjikan bisa membantu kelulusan SPMB.
+          </p>
+        </div>
+      </div>
+      <div class="slide-number">09 / 10</div>
+    </div>
+
+    <!-- Slide 10: Penutup -->
+    <div class="slide bg-gradient-1">
+      <div class="logo-badge">
+        <div class="icon">🎓</div>
+        <div class="text">Dinas Pendidikan Kota Salatiga</div>
+      </div>
+      <div class="badge badge-blue">Terima Kasih</div>
+      <h1>SPMB SMP 2026</h1>
+      <p class="subtitle">Selamat Menjadi Bagian dari<br>Generasi Emas Salatiga</p>
+      <div class="cta-box" style="margin-top: 30px;">
+        <p style="font-size: 20px; opacity: 0.9; margin-bottom: 16px;">Daftar sekarang di:</p>
+        <p style="font-size: 28px; font-weight: 700;">ppdb.jatengprov.go.id</p>
+        <p style="margin-top: 16px; font-size: 18px; opacity: 0.7;">Tahun Ajaran 2026/2027 — Kota Salatiga</p>
+      </div>
+      <div class="footer-note">© 2026 Dinas Pendidikan Kota Salatiga | spmb.salatigakota.go.id</div>
+      <div class="slide-number">10 / 10</div>
+    </div>
+
+  </div>
+
+  <!-- Navigation -->
+  <div class="slide-counter" id="slideCounter">1 / 10</div>
+
+  <div class="nav-dots" id="navDots"></div>
+
+  <div class="nav-arrows">
+    <div class="nav-arrow" onclick="prevSlide()">←</div>
+    <div class="nav-arrow" onclick="nextSlide()">→</div>
+  </div>
+
+  <script>
+    // Anti-copy protection
+    document.addEventListener('selectstart', e => e.preventDefault());
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('copy', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 's' || e.key === 'a')) {
+        e.preventDefault();
+      }
+    });
+
+    let currentSlide = 0;
+    const totalSlides = 10;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('slideCounter');
+    const dotsContainer = document.getElementById('navDots');
+
+    // Create dots
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goToSlide(i);
+      dotsContainer.appendChild(dot);
+    }
+
+    function updateSlide() {
+      container.style.transform = `translateX(-${currentSlide * 100}vw)`;
+      counter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+      const dots = dotsContainer.querySelectorAll('.nav-dot');
+      dots.forEach((d, i) => {
+        d.className = 'nav-dot' + (i === currentSlide ? ' active' : '');
+      });
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(index) {
