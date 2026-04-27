@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Web Development — Vite & React Workshop</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0f0f1a;color:#fff;overflow:hidden;height:100vh;width:100vw;user-select:none;-webkit-user-select:none}
+    .slide-container{width:100%;height:100vh;display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+    .slide{min-width:100vw;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:50px 70px;position:relative}
+    .bg-1{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#0f3460 100%)}
+    .bg-2{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)}
+    .bg-3{background:linear-gradient(135deg,#0f3460 0%,#1a1a2e 100%)}
+    .bg-blue{background:linear-gradient(135deg,#1e3a8a 0%,#3b82f6 100%)}
+    .bg-green{background:linear-gradient(135deg,#14532d 0%,#16a34a 100%)}
+    .bg-purple{background:linear-gradient(135deg,#581c87 0%,#a855f7 100%)}
+    .bg-orange{background:linear-gradient(135deg,#9a3412 0%,#f97316 100%)}
+    .bg-teal{background:linear-gradient(135deg,#134e4a 0%,#14b8a6 100%)}
+    .bg-red{background:linear-gradient(135deg,#7f1d1d 0%,#ef4444 100%)}
+    .bg-indigo{background:linear-gradient(135deg,#312e81 0%,#6366f1 100%)}
+    .bg-dark{background:linear-gradient(135deg,#0f0f1a 0%,#1a1a2e 100%)}
+    .bg-pink{background:linear-gradient(135deg,#831843 0%,#ec4899 100%)}
+    .bg-yellow{background:linear-gradient(135deg,#78350f 0%,#eab308 100%)}
+    .slide-number{position:absolute;bottom:25px;right:35px;font-size:13px;opacity:.4}
+    .logo-badge{position:absolute;top:25px;left:35px;display:flex;align-items:center;gap:10px}
+    .logo-badge .icon{width:42px;height:42px;background:rgba(255,255,255,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px}
+    .logo-badge .text{font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:.7}
+    .badge{display:inline-block;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+    .badge-blue{background:rgba(59,130,246,.25);color:#93c5fd;border:1px solid rgba(59,130,246,.3)}
+    .badge-green{background:rgba(22,163,74,.25);color:#86efac;border:1px solid rgba(22,163,74,.3)}
+    .badge-orange{background:rgba(249,115,22,.25);color:#fdba74;border:1px solid rgba(249,115,22,.3)}
+    .badge-purple{background:rgba(168,85,247,.25);color:#d8b4fe;border:1px solid rgba(168,85,247,.3)}
+    .badge-red{background:rgba(239,68,68,.25);color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
+    .badge-teal{background:rgba(20,184,166,.25);color:#5eead4;border:1px solid rgba(20,184,166,.3)}
+    .badge-pink{background:rgba(236,72,153,.25);color:#f9a8d4;border:1px solid rgba(236,72,153,.3)}
+    h1{font-size:64px;font-weight:800;text-align:center;line-height:1.1;margin-bottom:16px}
+    h2{font-size:48px;font-weight:700;text-align:center;margin-bottom:36px;line-height:1.15}
+    h3{font-size:28px;font-weight:600;margin-bottom:24px;color:rgba(255,255,255,.92)}
+    .subtitle{font-size:26px;opacity:.75;text-align:center;margin-bottom:36px}
+    .title-slide h1{font-size:72px}
+    .card-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;width:100%;max-width:1050px}
+    .card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;width:100%;max-width:1050px}
+    .card{display:flex;gap:16px;align-items:flex-start;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:22px 26px}
+    .card-icon{font-size:32px;flex-shrink:0}
+    .card-title{font-size:17px;font-weight:700;margin-bottom:6px}
+    .card-desc{font-size:13px;opacity:.68;line-height:1.5}
+    .col-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:22px 20px;text-align:center}
+    .col-card .emoji{font-size:42px;margin-bottom:12px}
+    .col-card h4{font-size:17px;font-weight:700;margin-bottom:10px}
+    .col-card p{font-size:13px;opacity:.68;line-height:1.5}
+    .compare-row{display:flex;gap:24px;width:100%;max-width:1050px}
+    .compare-col{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px}
+    .compare-col.bad{border-color:rgba(239,68,68,.3)}
+    .compare-col.good{border-color:rgba(34,197,94,.3)}
+    .compare-col h4{font-size:18px;font-weight:700;margin-bottom:16px;text-align:center}
+    .compare-col.bad h4{color:#fca5a5}
+    .compare-col.good h4{color:#86efac}
+    .compare-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .compare-col ul li{font-size:14px;line-height:1.5;padding-left:20px;position:relative}
+    .compare-col ul li::before{content:'•';position:absolute;left:0;opacity:.5}
+    .info-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:28px 36px;width:100%;max-width:900px}
+    .info-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+    .info-list li{display:flex;gap:14px;font-size:17px;line-height:1.5}
+    .info-list li .emoji{flex-shrink:0;font-size:24px}
+    .code-block{background:#0d1117;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 24px;font-family:'Courier New',Courier,monospace;font-size:14px;line-height:1.7;width:100%;max-width:850px;overflow-x:auto;white-space:pre;color:#e6edf3}
+    .code-block .comment{color:#8b949e}
+    .code-block .keyword{color:#ff7b72}
+    .code-block .string{color:#a5d6ff}
+    .code-block .fn{color:#d2a8ff}
+    .code-block .tag{color:#7ee787}
+    .inline-code{background:#1e293b;border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:2px 10px;font-family:'Courier New',Courier,monospace;font-size:14px;color:#a5d6ff}
+    .timeline{width:100%;max-width:900px}
+    .timeline-item{display:flex;gap:20px;align-items:flex-start;margin-bottom:22px}
+    .timeline-date{min-width:140px;font-size:16px;font-weight:700;color:#fbbf24}
+    .timeline-dot{width:14px;height:14px;border-radius:50%;background:#3b82f6;flex-shrink:0;margin-top:3px;position:relative}
+    .timeline-dot::after{content:'';position:absolute;top:14px;left:50%;transform:translateX(-50%);width:2px;height:36px;background:rgba(255,255,255,.08)}
+    .timeline-item:last-child .timeline-dot::after{display:none}
+    .timeline-content{font-size:16px;line-height:1.5}
+    .cta-box{background:rgba(255,255,255,.09);border:2px solid rgba(255,255,255,.18);border-radius:18px;padding:32px 50px;text-align:center}
+    .nav-dots{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:100}
+    .nav-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:all .3s}
+    .nav-dot.active{background:#fff;width:28px;border-radius:5px}
+    .nav-arrows{position:fixed;bottom:24px;right:35px;display:flex;gap:8px;z-index:100}
+    .nav-arrow{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+    .nav-arrow:hover{background:rgba(255,255,255,.18)}
+    .slide-counter{position:fixed;top:25px;right:35px;font-size:13px;opacity:.4;z-index:100}
+    .footer-note{position:absolute;bottom:25px;font-size:13px;opacity:.35}
+    .spacer-sm{height:14px}
+    .spacer-md{height:24px}
+    @media(max-width:768px){.slide{padding:36px 24px}h1{font-size:38px}h2{font-size:30px}.compare-row{flex-direction:column}.card-grid-2,.card-grid-3{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="slide-container" id="slideContainer">
+
+<!-- SLIDE 1: Cover -->
+<div class="slide bg-1 title-slide">
+  <div class="logo-badge"><div class="icon">⚛️</div><div class="text">Modern Web Workshop</div></div>
+  <div>
+    <div class="badge badge-blue">Workshop 2026</div>
+    <h1>Modern Web Development</h1>
+    <p class="subtitle">Vite + React + Tailwind CSS</p>
+    <div style="margin-top:30px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 24px;text-align:center;"><div style="font-size:28px;font-weight:800;">15 Menit</div><div style="font-size:13px;opacity:.6;">Prolog: Mengapa Modern Web?</div></div>
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 24px;text-align:center;"><div style="font-size:28px;font-weight:800;">45 Menit</div><div style="font-size:13px;opacity:.6;">Vite & React</div></div>
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 24px;text-align:center;"><div style="font-size:28px;font-weight:800;">45 Menit</div><div style="font-size:13px;opacity:.6;">Tailwind CSS</div></div>
+    </div>
+  </div>
+  <div class="slide-number">01 / 15</div>
+</div>
+
+<!-- SLIDE 2: Agenda -->
+<div class="slide bg-2">
+  <div class="logo-badge"><div class="icon">📋</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-blue">Agenda</div>
+  <h2>Apa yang Akan Kita Pelajari?</h2>
+  <div class="card-grid-3">
+    <div class="col-card"><div class="emoji">🚀</div><h4>Sesi 1 — Prolog</h4><p>Mengapa harus modern web? Perbandingan Vanilla JS vs Framework. Konsep SPA dan cara kerja browser modern.</p></div>
+    <div class="col-card"><div class="emoji">⚛️</div><h4>Sesi 2 — Vite & React</h4><p>Inisialisasi proyek, struktur folder, Component-Based Architecture, JSX, dan React Hooks dasar (useState).</p></div>
+    <div class="col-card"><div class="emoji">🎨</div><h4>Sesi 3 — Tailwind CSS</h4><p>Utility-First CSS, layout responsif dengan Flexbox/Grid, dan styling komponen hanya dengan class HTML.</p></div>
+  </div>
+  <div class="slide-number">02 / 15</div>
+</div>
+
+<!-- SLIDE 3: Section Divider — Prolog -->
+<div class="slide bg-blue">
+  <div class="logo-badge"><div class="icon">🚀</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-blue">Sesi 1 — 15 Menit</div>
+  <h1>Prolog</h1>
+  <p class="subtitle">Mengapa Harus Modern Web?</p>
+  <div class="slide-number">03 / 15</div>
+</div>
+
+<!-- SLIDE 4: Vanilla vs Modern -->
+<div class="slide bg-dark">
+  <div class="logo-badge"><div class="icon">⚡</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-blue">Prolog</div>
+  <h2>Vanilla JS vs Modern Framework</h2>
+  <div class="compare-row">
+    <div class="compare-col bad">
+      <h4>❌ Vanilla JS / HTML / CSS</h4>
+      <ul><li>Setiap halaman = file HTML terpisah</li><li>Pengelolaan DOM manual satu-per-satu</li><li>Kode JS, CSS, HTML bercampur</li><li>Sulit dipakai ulang (reusable)</li><li>Project besar = semakin berantakan</li><li>Tidak ada sistem component</li><li>Setup build manual (bundler, minifier)</li></ul>
+    </div>
+    <div class="compare-col good">
+      <h4>✅ Modern Framework (React)</h4>
+      <ul><li>Single Page Application (SPA) — 1 HTML, banyak "halaman"</li><li>DOM manipulation declarative</li><li>Kode terstruktur dalam Component</li><li>Component bisa dipakai ulang di mana saja</li><li>Arsitektur modular, mudah dipelihara</li><li>Virtual DOM = rendering lebih cepat</li><li>Ekosistem build tools (Vite) otomatis</li></ul>
+    </div>
+  </div>
+  <div class="slide-number">04 / 15</div>
+</div>
+
+<!-- SLIDE 5: Apa itu SPA -->
+<div class="slide bg-purple">
+  <div class="logo-badge"><div class="icon">🧩</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-purple">Prolog</div>
+  <h2>Apa itu Single Page Application (SPA)?</h2>
+  <div class="card-grid-2">
+    <div class="card"><div class="card-icon">📄</div><div><div class="card-title">Traditional Web</div><div class="card-desc">Setiap klik link = browser minta HTML baru ke server → server kirim HTML → browser reload seluruh halaman. Setiap reload ada jeda loading yang terasa "patah".</div></div></div>
+    <div class="card"><div class="card-icon">⚡</div><div><div class="card-title">Single Page Application</div><div class="card-desc">Cukup satu HTML. Semua "halaman" sudah ada di browser. Ketika klik link, JavaScript menukar konten secara cepat tanpa reload. Terasa seperti app native.</div></div></div>
+  </div>
+  <div class="spacer-md"></div>
+  <div class="info-box">
+    <h3>Contoh SPA yang Pernah Kamu Pakai:</h3>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:17px;opacity:.88"><span>📱 Gmail</span><span>📘 Facebook</span><span>🐦 Twitter/X</span><span>📊 Trello</span><span>🗂️ Notion</span><span>🎵 Spotify Web</span></div>
+  </div>
+  <div class="slide-number">05 / 15</div>
+</div>
+
+<!-- SLIDE 6: SPA Cara Kerja -->
+<div class="slide bg-3">
+  <div class="logo-badge"><div class="icon">🔄</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-purple">Prolog</div>
+  <h2>Cara Kerja SPA vs Traditional</h2>
+  <div class="compare-row">
+    <div class="compare-col bad">
+      <h4>🔁 Traditional Multi-Page</h4>
+      <ul><li>User klik link</li><li>Browser kirim request ke server</li><li>Server render HTML baru</li><li>HTML dikirim balik ke browser</li><li>Browser unload halaman lama</li><li>Browser load halaman baru</li><li><strong style="color:#fca5a5">⏱️ Loading setiap kali</strong></li></ul>
+    </div>
+    <div class="compare-col good">
+      <h4>⚡ Single Page Application</h4>
+      <ul><li>User klik link / button</li><li>JavaScript intercept request</li><li>Component React "merender" konten baru</li><li>Hanya bagian yang berubah di-update</li><li>Tidak ada unload/load halaman</li><li>Transisi terasa INSTAN</li><li><strong style="color:#86efac">🚀 Sekali load, semua cepat</strong></li></ul>
+    </div>
+  </div>
+  <div class="spacer-md"></div>
+  <div class="info-box" style="text-align:center;padding:18px 36px">
+    <p style="font-size:16px;opacity:.8">💡 React menggunakan <strong>Virtual DOM</strong> — representasi ringan dari DOM asli. Ketika state berubah, React membandingkan Virtual DOM lama dan baru, lalu cuma meng-update bagian yang berbeda di DOM asli.</p>
+  </div>
+  <div class="slide-number">06 / 15</div>
+</div>
+
+<!-- SLIDE 7: Section Divider — Vite & React -->
+<div class="slide bg-green">
+  <div class="logo-badge"><div class="icon">⚛️</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-green">Sesi 2 — 45 Menit</div>
+  <h1>Vite & React</h1>
+  <p class="subtitle">Membangun Proyek Cepat</p>
+  <div class="slide-number">07 / 15</div>
+</div>
+
+<!-- SLIDE 8: Node & NPM -->
+<div class="slide bg-2">
+  <div class="logo-badge"><div class="icon">🟢</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-green">Vite & React</div>
+  <h2>Kenalan Dulu: Node.js & NPM</h2>
+  <div class="card-grid-2" style="max-width:900px">
+    <div class="card"><div class="card-icon">🟢</div><div><div class="card-title">Node.js</div><div class="card-desc">Runtime JavaScript di luar browser. Permite kamu menjalankan JavaScript di server/terminal. Dibutuhkan untuk menjalankan build tools modern seperti Vite, Webpack, dll.</div></div></div>
+    <div class="card"><div class="card-icon">📦</div><div><div class="card-title">NPM (Node Package Manager)</div><div class="card-desc">Toko online untuk library JavaScript. Sama kayak Play Store tapi untuk kode. Ada jutaan package siap pakai — React, Tailwind, Express, dll.</div></div></div>
+  </div>
+  <div class="spacer-md"></div>
+  <div class="code-block"><span class="comment"># Cek versi Node.js dan NPM</span>
+$ node --version
+$ npm --version
+
+<span class="comment"># Buat proyek React baru dengan Vite</span>
+$ npm create vite@latest my-app -- --template react
+$ cd my-app
+$ npm install
+
+<span class="comment"># Jalanin development server</span>
+$ npm run dev</div>
+  <div class="slide-number">08 / 15</div>
+</div>
+
+<!-- SLIDE 9: Folder Structure -->
+<div class="slide bg-dark">
+  <div class="logo-badge"><div class="icon">📁</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-green">Vite & React</div>
+  <h2>Struktur Folder React</h2>
+  <div class="compare-row">
+    <div class="compare-col" style="flex:.6">
+      <h4 style="color:#e6edf3">📂 Struktur Folder</h4>
+      <div class="code-block" style="font-size:13px;padding:16px">my-app/
+├── node_modules/  <span class="comment"># Library ter-install</span>
+├── public/       <span class="comment"># File statis publik</span>
+├── src/          <span class="comment"># Kode sumber utama</span>
+│   ├── assets/
+│   ├── App.jsx   <span class="comment"># Component utama</span>
+│   ├── main.jsx  <span class="comment"># Entry point</span>
+│   └── index.css
+├── index.html    <span class="comment"># HTML root</span>
+├── package.json  <span class="comment"># Project config</span>
+└── vite.config.js</div>
+    </div>
+    <div class="compare-col">
+      <h4 style="color:#e6edf3">Penjelasan Singkat</h4>
+      <ul><li><strong>src/</strong> — semua kode React di sini</li><li><strong>App.jsx</strong> — component utama</li><li><strong>main.jsx</strong> — mount React ke DOM</li><li><strong>index.html</strong> — HTML yang jadi "rumah" React</li><li><strong>public/</strong> — file statis (favicon, gambar)</li><li><strong>node_modules/</strong> — jangan disentuh 😄</li></ul>
+    </div>
+  </div>
+  <div class="slide-number">09 / 15</div>
+</div>
+
+<!-- SLIDE 10: Component -->
+<div class="slide bg-teal">
+  <div class="logo-badge"><div class="icon">🧱</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-teal">Vite & React</div>
+  <h2>Component-Based Architecture</h2>
+  <div class="info-box">
+    <h3>Inti Konsep:</h3>
+    <div style="font-size:16px;line-height:1.7;opacity:.88">Pecah UI menjadi <strong>potongan-potongan kecil</strong> yang <strong>mandiri</strong> dan <strong>bisa dipakai ulang</strong>. Setiap component punya logic dan tampilan sendiri.</div>
+  </div>
+  <div class="spacer-md"></div>
+  <div class="card-grid-3">
+    <div class="col-card"><div class="emoji">🎨</div><h4>Header Component</h4><p>Berisi logo, navigasi, dan tombol login. Dipakai di semua halaman.</p></div>
+    <div class="col-card"><div class="emoji">📦</div><h4>ProductCard Component</h4><p>Tampilan kartu produk (gambar, nama, harga). Dipakai berkali-kali di halaman katalog.</p></div>
+    <div class="col-card"><div class="emoji">🛒</div><h4>CartItem Component</h4><p>Satuan item di keranjang (nama, jumlah, tombol hapus).</p></div>
+  </div>
+  <div class="spacer-md"></div>
+  <div class="code-block"><span class="keyword">function</span> <span class="fn">Header</span>() {
+  <span class="keyword">return</span> (
+    &lt;nav&gt;
+      &lt;Logo /&gt;
+      &lt;Menu /&gt;
+      &lt;LoginButton /&gt;
+    &lt;/nav&gt;
+  );
+}</div>
+  <div class="slide-number">10 / 15</div>
+</div>
+
+<!-- SLIDE 11: JSX -->
+<div class="slide bg-indigo">
+  <div class="logo-badge"><div class="icon">⚛️</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-purple">Vite & React</div>
+  <h2>JSX — HTML di Dalam JavaScript</h2>
+  <div class="compare-row">
+    <div class="compare-col bad">
+      <h4>HTML Biasa</h4>
+      <div class="code-block" style="font-size:13px"><span class="comment">&lt;!-- File terpisah, tidak bisa pakai variabel JS --&gt;</span>
+&lt;div class=<span class="string">"card"</span>&gt;
+  &lt;h2&gt;Nama Produk&lt;/h2&gt;
+  &lt;p&gt;Harga: Rp100.000&lt;/p&gt;
+&lt;/div&gt;</div>
+    </div>
+    <div class="compare-col good">
+      <h4>JSX (React)</h4>
+      <div class="code-block" style="font-size:13px"><span class="comment">// Bisa pakai variabel JS langsung!</span>
+<span class="keyword">function</span> <span class="fn">Card</span>() {
+  <span class="keyword">const</span> <span class="var">name</span> = <span class="string">"Laptop"</span>;
+  <span class="keyword">const</span> <span class="var">price</span> = 15000000;
+  <span class="keyword">return</span> (
+    &lt;div className=<span class="string">"card"</span>&gt;
+      &lt;h2&gt;{<span class="var">name</span>}&lt;/h2&gt;
+      &lt;p&gt;Harga: Rp{<span class="var">price</span>.toLocaleString()}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</div>
+    </div>
+  </div>
+  <div class="spacer-md"></div>
+  <div class="info-box">
+    <h3>Aturan Penting JSX:</h3>
+    <ul class="info-list" style="font-size:15px">
+      <li>✅ Pakai <span class="inline-code">className</span> bukan <span class="inline-code">class</span></li>
+      <li>✅ Tutup semua tag (<span class="inline-code">&lt;br /&gt;</span>, <span class="inline-code">&lt;img /&gt;</span>)</li>
+      <li>✅ Curly braces <span class="inline-code">{'{ }'}</span> untuk masukkan variabel JS</li>
+      <li>✅ Satu root element per component (bungkus dengan <span class="inline-code">&lt;&gt;&lt;/&gt;</span> atau <span class="inline-code">&lt;div&gt;</span>)</li>
+    </ul>
+  </div>
+  <div class="slide-number">11 / 15</div>
+</div>
+
+<!-- SLIDE 12: useState -->
+<div class="slide bg-pink">
+  <div class="logo-badge"><div class="icon">⚙️</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-pink">Vite & React</div>
+  <h2>React Hooks — useState</h2>
+  <div class="info-box">
+    <h3>Apa itu Hooks?</h3>
+    <div style="font-size:16px;opacity:.88;line-height:1.6">Hooks adalah fungsi khusus React yang memungkinkan kamu menggunakan fitur React (state, lifecycle, dll) di dalam functional component. <strong>useState</strong> adalah hook paling dasar — digunakan untuk menyimpan dan mengupdate data yang berubah.</div>
+  </div>
+  <div class="spacer-md"></div>
+  <div class="code-block"><span class="comment">// import useState dari React</span>
+<span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">'react'</span>;
+
+<span class="keyword">function</span> <span class="fn">Counter</span>() {
+  <span class="comment">// count = state saat ini, setCount = fungsi untuk update state</span>
+  <span class="keyword">const</span> [<span class="var">count</span>, <span class="fn">setCount</span>] = useState(<span class="string">0</span>);
+
+  <span class="keyword">return</span> (
+    &lt;div&gt;
+      &lt;p&gt;Angka: {<span class="var">count</span>}&lt;/p&gt;
+      &lt;button onClick={() =&gt; <span class="fn">setCount</span>(<span class="var">count</span> + <span class="string">1</span>)}&gt;
+        Tambah
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</div>
+  <div class="spacer-md"></div>
+  <div class="info-box" style="padding:18px 28px">
+    <p style="font-size:15px;opacity:.88">💡 <strong>Konsep penting:</strong> Setiap kali state berubah, React Otomatis merender ulang component dan memperbarui DOM. Kamu nggak perlu panggil <span class="inline-code">document.getElementById()</span> lagi!</p>
+  </div>
+  <div class="slide-number">12 / 15</div>
+</div>
+
+<!-- SLIDE 13: Section Divider — Tailwind -->
+<div class="slide bg-orange">
+  <div class="logo-badge"><div class="icon">🎨</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-orange">Sesi 3 — 45 Menit</div>
+  <h1>Tailwind CSS</h1>
+  <p class="subtitle">Styling Modern dengan Utility-First</p>
+  <div class="slide-number">13 / 15</div>
+</div>
+
+<!-- SLIDE 14: Tailwind Konsep -->
+<div class="slide bg-yellow">
+  <div class="logo-badge"><div class="icon">🎨</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-orange">Tailwind CSS</div>
+  <h2>Utility-First CSS</h2>
+  <div class="compare-row">
+    <div class="compare-col bad">
+      <h4>❌ CSS Tradisional (file .css)</h4>
+      <ul><li>Buat class di file .css terpisah</li><li>Nama class harus dipikirin sendiri</li><li>Susah track: class ini di file mana?</li><li>Sering ada conflict naming</li><li>Loading CSS terpisah = extra request</li><li>Sulit bikin responsif</li></ul>
+    </div>
+    <div class="compare-col good">
+      <h4>✅ Tailwind CSS (Utility-First)</h4>
+      <ul><li>Class udah tersedia langsung di HTML</li><li>Nama class = nama stylenya (self-documenting)</li><li>Tinggal baca class di HTML, langsung paham</li><li>Tidak ada conflict naming</li><li>Purge otomatis — hanya CSS yang dipakai yang di-load</li><li>Bikin responsif sangat mudah</li></ul>
+    </div>
+  </div>
+  <div class="spacer-md"></div>
+  <div class="code-block"><span class="comment">&lt;!-- Tailwind: semua styling langsung di class! --&gt;</span>
+&lt;div className=<span class="string">"flex items-center justify-between p-4 bg-white rounded-lg shadow-md"</span>&gt;
+  &lt;h1 className=<span class="string">"text-2xl font-bold text-gray-900"</span>&gt;Judul&lt;/h1&gt;
+  &lt;button className=<span class="string">"px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"</span>&gt;
+    Klik Saya
+  &lt;/button&gt;
+&lt;/div&gt;</div>
+  <div class="slide-number">14 / 15</div>
+</div>
+
+
+
+<!-- SLIDE 15: Tailwind Layout & Penutup -->
+<div class="slide bg-teal">
+  <div class="logo-badge"><div class="icon">🎨</div><div class="text">Modern Web Workshop</div></div>
+  <div class="badge badge-teal">Tailwind CSS</div>
+  <h2>Layout Responsif: Flexbox & Grid</h2>
+  <div class="card-grid-2">
+    <div class="card"><div class="card-icon">↔️</div><div><div class="card-title">Flexbox (flex)</div><div class="card-desc">Atur layout dalam satu arah — horizontal atau vertical. Cocok untuk navbar, card row, button group.</div></div></div>
+    <div class="card"><div class="card-icon">⬛</div><div><div class="card-title">Grid (grid)</div><div class="card-desc">Atur layout dalam dua arah — baris dan kolom sekaligus. Cocok untuk gallery, dashboard, card grid.</div></div></div>
+    <div class="card"><div class="card-icon">📱</div><div><div class="card-title">Responsif (sm:, md:, lg:)</div><div class="card-desc">Prefix breakpoint untuk styling berbeda di tiap ukuran layar.</div></div></div>
+    <div class="card"><div class="card-icon">🎯</div><div><div class="card-title">Spacing & Colors</div><div class="card-desc">Padding: p-4, Margin: mx-auto, Colors: bg-blue-500, text-white.</div></div></div>
+  </div>
+  <div class="spacer-md"></div>
+  <div class="info-box" style="text-align:center"><p style="font-size:16px;opacity:.85">🎉 Selamat! Kamu sudah mengenal dasar modern web development.<br>Gabungkan ketiga teknologi ini — Vite + React + Tailwind — dan kamu bisa membangun web app modern yang powerful!</p></div>
+  <div class="slide-number">15 / 15</div>
+</div>
+
+</div>
+
+<!-- Navigation -->
+<div class="slide-counter" id="slideCounter">1 / 15</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-arrows"><div class="nav-arrow" onclick="prevSlide()">←</div><div class="nav-arrow" onclick="nextSlide()">→</div></div>
+
+<script>
+document.addEventListener("selectstart", e => e.preventDefault());
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("copy", e => e.preventDefault());
+document.addEventListener("dragstart", e => e.preventDefault());
+document.addEventListener("keydown", e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === "p" || e.key === "s" || e.key === "a")) e.preventDefault();
+});
+
+let currentSlide = 0;
+const totalSlides = 15;
+const container = document.getElementById("slideContainer");
+const counter = document.getElementById("slideCounter");
+const dotsContainer = document.getElementById("navDots");
+
+for (let i = 0; i < totalSlides; i++) {
+  const dot = document.createElement("div");
+  dot.className = "nav-dot" + (i === 0 ? " active" : "");
+  dot.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+
+function updateSlide() {
+  container.style.transform = "translateX(-" + (currentSlide * 100) + "vw)";
+  counter.textContent = (currentSlide + 1) + " / " + totalSlides;
+  const dots = dotsContainer.querySelectorAll(".nav-dot");
+  dots.forEach((d, i) => { d.className = "nav-dot" + (i === currentSlide ? " active" : ""); });
+}
+
+function nextSlide() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); } }
+function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlide(); } }
+function goToSlide(index) { currentSlide = index; updateSlide(); }
+
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " ") { e.preventDefault(); nextSlide(); }
+  else if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); prevSlide(); }
+});
+<\/script>
+</body>
+</html>
